@@ -2,6 +2,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
@@ -10,6 +11,7 @@ public class Borrower {
 	index obj = new index();
 	String bookTitle,branchN;
 	int bId,brId,branchIdChoosed,bid,cardNum;
+	Scanner scan = new Scanner(System.in);
 	
 	//List of branches
 	public void branchList(){
