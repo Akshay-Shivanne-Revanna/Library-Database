@@ -9,10 +9,9 @@ public class index{
 	
 	public static Connection conn = null;
 	public static PreparedStatement stmt = null;
-	static Statement stmt2 = null;
 	public static ResultSet rs =null;
 	public static ResultSet rs2 =null;
-	public static int option,branchChoice,cardNum,borrOption,bookId,noOfCopie,libOption,noOfCopies,branchChoice2,bookChoice,bId,brId,branchIdChoosed,bid,adminOption,pubOption,libBranchOption,adminBorrOption;
+	public static int newCount,option,branchChoice,cardNum,borrOption,bookId,noOfCopie,libOption,noOfCopies,branchChoice2,bookChoice,bid,adminOption,pubOption,libBranchOption,adminBorrOption;
 	public static String branchName,branchAddress,title,libBranch,branchChoosed,bookTitle,branchCh,btitle;
 	public static Scanner scan;
 	
@@ -136,9 +135,10 @@ public class index{
 								System.out.println("1)Publishers");
 								System.out.println("2)Library Branches");
 								System.out.println("3)Borrowers");
-								System.out.println("4)Book and Author");
-								System.out.println("5)Update Due date");
-								System.out.println("6) Exit" );
+								System.out.println("4)Author");
+								System.out.println("5)Book ");
+								System.out.println("6)Update Due date");
+								System.out.println("7) Exit" );
 								
 								adminOption = scan.nextInt();
 								
@@ -261,20 +261,88 @@ public class index{
 								 
 								 		  break;
 								 		  
-								 case 4 : System.out.println("---------ADMIN ON BOOK AND AUTHOR-----");
-								 		 
-								 
+								 case 4 : do{	
+								 			System.out.println("-------ADMIN ON AUTHORS ------------");
+								 			System.out.println();
+								 			System.out.println("1) Add to AUTHORS");
+								 			System.out.println("2) Delete to AUTHORS");
+								 			System.out.println("3) Update to AUTHORS");
+								 			System.out.println("4) Exit");
+					 		  
+								 			adminBorrOption = scan.nextInt();
+					 		  
+								 			switch(adminBorrOption){
+								 			
+								 				case 1 : System.out.println("----------Add to AUTHORS  --------");
+								 						 System.out.println();
+								 						 admin.addAuthor();
+								 						 break;
+		 		  			 
+								 				case 2 : System.out.println("----------Delete AUTHORS -----------");
+								 						 System.out.println();
+								 						 admin.deleteAuthor();
+								 					 break;
+								 					
+		 		  			 
+								 				case 3 : System.out.println("----------Update AUTHORS -----------");
+								 						 System.out.println();
+								 						 admin.updateAuthor();
+								 					 break;
+		 		  			 
+								 				case 4 : break;
+		 		  	
+								 			default :System.out.println("Invalid Option");
+								 					 break;
+								 										 		
+								 		}
+							 		 }while(adminBorrOption!=4);
 								  		  break;
 								 		  
+								case 5 : do{	
+							 				System.out.println("-------ADMIN ON BOOKS ------------");
+							 				System.out.println();
+							 				System.out.println("1) Add to BOOKS");
+							 				System.out.println("2) Delete to BOOKS");
+							 				System.out.println("3) Update to BOOKS");
+							 				System.out.println("4) Exit");
+				 		  
+							 				adminBorrOption = scan.nextInt();
+				 		  
+							 				switch(adminBorrOption){
+							 			
+							 					case 1 : System.out.println("----------Add to BOOKS  --------");
+							 							 System.out.println();
+							 							 admin.addBook();
+							 							 break;
+	 		  			 
+							 					case 2 : System.out.println("----------Delete BOOKS -----------");
+							 						 	 System.out.println();
+							 						 	 admin.updateBook();
+							 						 	 break;
+							 					
+	 		  			 
+							 					case 3 : System.out.println("----------Update BOOKS -----------");
+							 							 System.out.println();
+							 							 admin.deleteBook();
+							 							 break;
+	 		  			 
+							 				case 4 : break;
+	 		  	
+							 				default :System.out.println("Invalid Option");
+							 					 break;
+							 										 		
+							 					}
+								 			}while(adminBorrOption!=4);
+								 			break;
 								  		  
-								 case 5 : System.out.println("---------ADMIN ON DUE DATE-----------");
+								 case 6 : System.out.println("---------ADMIN ON DUE DATE-----------");
 								 		  break;
 								 		  
-								 case 6 : break;
+								 case 7 : break;
 							 											
 								}
 								
-							}while(adminOption!=6);
+							}while(adminOption!=7);
 							break;
 						
 				
@@ -283,8 +351,8 @@ public class index{
 				
 						
 				case 3 : { 
-					       do {
-					    	   		do {
+					       
+					    	 do {
 					    	   			System.out.println("----------------------------------------------");
 					    	   			System.out.println("Enter the your Card Number:");
 					    	   			cardNum = scan.nextInt();
@@ -301,6 +369,7 @@ public class index{
 					    	   			
 					    	   		}while(true);
 					    	   		
+					    	   		do {
 					    	   		System.out.println("----------------------BORROWER OPTIONS-----------------------");
 					    	   		
 					    	   		System.out.println("BORR1:");
@@ -313,14 +382,14 @@ public class index{
 					    	   		switch(borrOption){
 					    	   			
 					    	   			case 1 : //CHECK OUT THE BOOK
-					    	   						System.out.println("------------------------BRANCHES----------------------");
+					    	   					   	System.out.println("------------------------BRANCHES----------------------");
 					    	   						br.branchList();
 					    	   						branchChoice2 = scan.nextInt();
 					    	   						
 					    	   						stmt = conn.prepareStatement("select branchName from tbl_library_branch");
 					    	   						rs = stmt.executeQuery();
-					    	   											    	   						
-					    	   						int newCount=1;
+					    	   								   						
+					    	   						newCount=1;
 					    	   						while(rs.next()){
 					    	   									    	   							
 					    	   							if(branchChoice2 == newCount ){
@@ -329,35 +398,23 @@ public class index{
 					    	   		 	   				newCount++;
 					    	   						}
 					    	   						
-					    	   						System.out.println("branch choosed :" + branchChoosed );
-					    	   						
-					    	   						br.branchBooks();
-					    	   						
+					    	   						br.branchBooks(branchChoosed);
 					    	   						bookChoice = scan.nextInt();
-					    	   						
 					    	   						//choosing right book
-					    	   						br.bookChoosed();
-					    	   						
+					    	   						br.bookChoosed(bookChoice);
 					    	   						//inserting in the book loans
 					    	   						br.bookLoans();
-					    	   						
-					    	   						
-					    	   						
+					    	   					 
 					    	   					 break;
 					    	   			
 					    	   			case 2 : 
 					    	   					 System.out.println("Return a Book");
-					    	   					 
 					    	   					 br.branchList();
-					    	   					 
 					    	   					 branchChoice2 = scan.nextInt();
-					    	   			
-					    	   					 br.branchId();
-				    	   						
-					    	   					 System.out.println("Enter the book Id :" );
+					    	   				   	 br.branchId();
+				    	   						 System.out.println("Enter the book Id :" );
 					    	   					 bid = scan.nextInt();
-				    	   						
-					    	   					 br.bookReturn();
+				    	   						 br.bookReturn();
 					    	   					 break;
 					    	   					 
 					    	   			case 3 : System.out.println("Quit to previous");
@@ -371,7 +428,6 @@ public class index{
 							break;
 							
 						 }
-				
 				
 				
 				}
