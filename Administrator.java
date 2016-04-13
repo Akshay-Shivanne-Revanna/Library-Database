@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Administrator {
 
 	String newPubName,newPubAddr,newPubNum,pubName,pubAddr,pubPhone,branchN,branchA,bname,bAddr,bPhone,publisherName,publisherAddress,publisherPhone,newpubPhone2,newPubAddr2,newpubName2,pubName2,PubAddr2,authName2,authName,genreName,brCh;
-	int publisherId,newPubId2,pubId2,authId2,genreId,bookId2,brId;
+	int publisherId,newPubId2,pubId2,authId2,genreId,bookId2,brId,cardNo;
 	Scanner scan = new Scanner(System.in);
 	Librarian lib = new Librarian();
 	
@@ -649,5 +649,72 @@ public class Administrator {
 		}
 	}
 	
+	//Display particular borrower books checked out
+	public void booksCheckedOut(){
+		PreparedStatement stmt;
+		try {
+			 
+			 stmt = index.conn.prepareStatement("select bookId,branchId,dueDate from tbl_book_loans where cardNo=? and datein is null");
+			 stmt.setInt(1, cardNo);
+			 ResultSet rs = stmt.executeQuery();
+			 
+			
+			 while(rs.next()){
+				 System.out.println("Book ID" + " : " + rs.getInt("bookId") + "  Branch Id : " + rs.getInt("branchId") + "  DueDate :" + rs.getDate("dueDate"));
+			 }
+			 
+			 
+			
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
+	
+	
+	
+	//UPDATE DUE DATE
+	public void updateDueDate(){
+		try {
+			PreparedStatement stmt;
+			do {
+				System.out.println("----------------------------------------------");
+				System.out.println("Enter the your Card Number:");
+				cardNo = scan.nextInt();
+				stmt = index.conn.prepareStatement("select cardNo from tbl_borrower where cardNo =?");
+				stmt.setInt(1,cardNo);
+				ResultSet rs = stmt.executeQuery();
+				if(!rs.next()){
+					System.out.println("Invalid PIN");
+   				
+				}else{
+					break;
+				}
+   			
+			}while(true);
+			
+			booksCheckedOut();
+			
+			System.out.println("Enter the book id whose due date needs to be extended :");
+			int dBid = scan.nextInt();
+			
+			stmt = index.conn.prepareStatement("update tbl_book_loans set dueDate = DATE_ADD(CURDATE(),INTERVAL 7 DAY) where cardNo =? and bookId=? ");
+			stmt.setInt(1, cardNo);
+			stmt.setInt(2, dBid);
+			stmt.executeUpdate();
+			System.out.println("Due Date is extented..");
+		    
+			} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		
+	}
 	
 }
+
