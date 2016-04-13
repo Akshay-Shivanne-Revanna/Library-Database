@@ -40,7 +40,7 @@ public class Librarian {
 	
 	public int selectBranch(int branchChoice ){
 		
-		 String selectSQL = "select branchName from tbl_library_branch";
+		 String selectSQL = "select branchName,branchId from tbl_library_branch";
 		 
 		 int count2=1;
 		 
@@ -51,6 +51,7 @@ public class Librarian {
 			 while(rs.next()){
 				 if(branchChoice == count2){
 					 index.branchCh = rs.getString("branchName");
+					 branchId = rs.getInt("branchId");
 					 System.out.println("branch choosed:" + index.branchCh );
 				 }
 				
@@ -131,7 +132,9 @@ public class Librarian {
 		
 		PreparedStatement stmt;
 		try {
-			stmt = index.conn.prepareStatement("select b.title,a.authorName from tbl_book b inner join tbl_book_authors as ba on b.bookId = ba.bookId inner join tbl_author a on ba.authorId = a.authorId");
+			System.out.println("branch id :" +branchId );
+			stmt = index.conn.prepareStatement("select lb.branchId,b.title,a.authorName from tbl_book b inner join tbl_book_authors as ba on b.bookId = ba.bookId inner join tbl_author a on ba.authorId = a.authorId inner join tbl_book_copies bc on bc.bookId = b.bookId inner join tbl_library_branch lb on bc.branchId = lb.branchId where lb.branchId =?");
+			stmt.setInt(1, branchId);
 			ResultSet rs=stmt.executeQuery();
 			
 			temp=1;
@@ -215,13 +218,10 @@ public class Librarian {
 		
 		//SELECT BOOK AND GET BOOK ID
 		int bookId = selectBookAdd(bookOp);
-        
-		
+        		
 		//LIST THE COPIES IN THE BRANCH FOR THE PARTICULAR BOOK
 		listSelectedBookCopies(bookId);
 		
-			System.out.println("temo value : " +temp );
-			System.out.println("bookOp : " + bookOp);
 		if(bookOp<temp){
          
        	 System.out.println("Existing number of copies" );
@@ -241,27 +241,12 @@ public class Librarian {
        		while(rs.next()){
        			branchId = rs.getInt("branchId");
        		}
-       		
-       		
-       		
-       		if(bookSelectedNoOfCopies==0){
-          		 
-       			stmt = index.conn.prepareStatement("insert into tbl_book_copies(bookId, branchId, noOfCopies) values(?, ?, ?)");
-       			stmt.setInt(1, bookSelectedId);
-       			stmt.setInt(2, branchId);
-       			stmt.setInt(3, updatedCopies);
-       			
-       			stmt.executeUpdate();
-          		 
-          	}
-       		 
-       		 
+       		       		
 			stmt = index.conn.prepareStatement("update tbl_book_copies bc join tbl_library_branch lb on bc.branchId = lb.branchId join tbl_book b on bc.bookId = b.bookId set bc.noOfCopies = ? where b.bookId = ? and lb.branchName=?");
-		
-       	 stmt.setInt(1,updatedCopies);
-      	 stmt.setInt(2, bookSelectedId);
-      	 stmt.setString(3,index.branchCh );
-      	 stmt.executeUpdate(); 
+		    stmt.setInt(1,updatedCopies);
+       	 	stmt.setInt(2, bookSelectedId);
+       	 	stmt.setString(3,index.branchCh );
+       	 	stmt.executeUpdate(); 
       	 
       	 System.out.println("Book copies updated succesfully");
         }
