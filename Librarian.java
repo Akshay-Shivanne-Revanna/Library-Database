@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 public class Librarian {
 	
@@ -10,7 +11,7 @@ public class Librarian {
 	String branchName, branchAddress,bookSelectedTitle;
 	public static int temp =0;
 	public static int branchId=0;
-	
+	Scanner scan = new Scanner(System.in);
 	public void listLibrarybranch(){
 		
 		try {
@@ -97,10 +98,10 @@ public class Librarian {
 	public void updateLibraryDetails(){
 		
 		System.out.println("Please enter new branch name or enter N/A for no change:");
-	    String BName = index.scan.next();
+	    String BName = scan.next();
 	    System.out.println();
 	    System.out.println("Please enter new branch address or enter N/A for no change:");
-	    String Address = index.scan.next();
+	    String Address = scan.next();
 	    
 	    if(BName.equals("N/A")){
 	    	BName = index.branchCh;
@@ -144,7 +145,7 @@ public class Librarian {
 		        }
 		        System.out.println(temp + " ) " + "Quit to cancel operation");
 		        
-		        bookOption = index.scan.nextInt();
+		        bookOption = scan.nextInt();
 		        
 			
 		} catch (SQLException e) {
@@ -227,7 +228,7 @@ public class Librarian {
        	 System.out.println("Existing number of copies" );
        	 System.out.println(bookSelectedNoOfCopies);
        	 System.out.println("Enter new number of copies:");
-       	 int updatedCopies = index.scan.nextInt() + bookSelectedNoOfCopies;
+       	 int updatedCopies = scan.nextInt() + bookSelectedNoOfCopies;
        	 
        
        	 try {
