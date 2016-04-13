@@ -335,7 +335,9 @@ public class index{
 								 			}while(adminBorrOption!=4);
 								 			break;
 								  		  
-								 case 6 : System.out.println("---------ADMIN ON DUE DATE-----------");
+								 case 6 : System.out.println("---------UPDATE DUE DATE-----------");
+								 		  System.out.println();
+								 		  admin.updateDueDate();
 								 		  break;
 								 		  
 								 case 7 : break;
